@@ -3,10 +3,18 @@ class AutoSuggest extends HTMLElement {
     super();
     // initialize shadow root
     this.shadowRoot = this.attachShadow({ mode: "open" });
+    this.style = document.createElement("style");
+    this.shadowRoot.appendChild(
+      this.withStyles(` input {
+      width: 500px;
+    }`)
+    );
 
     // create search input
     this.searchBox = document.createElement("input");
-    this.initSearchBox();
+    this.searchBox.setAttribute("placeholder", "Search...");
+    this.shadowRoot.appendChild(this.searchBox);
+
     // create suggestion box
     this.wrapper = document.createElement("div");
     this.wrapper.setAttribute("class", "suggestion-box-wrapper");
@@ -62,22 +70,12 @@ class AutoSuggest extends HTMLElement {
   }
   shadowRoot = null;
   searchBox = null;
+  style = null;
   fruits = ["Apples", "Apricots", "Cherries", "Grapes", "Bananas"];
 
   withStyles(cssStyles) {
-    let style = document.createElement("style");
-    style.textContent = cssStyles;
-    return style;
-  }
-  initSearchBox() {
-    this.searchBox.setAttribute("placeholder", "Search...");
-    let searchBoxStyle = `
-      input {
-        width: 500px;
-      }
-    `;
-    this.shadowRoot.appendChild(this.withStyles(searchBoxStyle));
-    this.shadowRoot.appendChild(this.searchBox);
+    this.style.appendChild(document.createTextNode(cssStyles));
+    return this.style;
   }
 }
 
