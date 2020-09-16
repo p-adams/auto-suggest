@@ -3,6 +3,7 @@ class AutoSuggest extends HTMLElement {
     super();
     // initialize shadow root
     this.shadowRoot = this.attachShadow({ mode: "open" });
+
     // create search input
     this.searchBox = document.createElement("input");
     this.initSearchBox();
@@ -16,7 +17,7 @@ class AutoSuggest extends HTMLElement {
 
     this.searchBox.addEventListener("input", (e) => {
       let input = e.target.value;
-      //
+      // remove ul list items when input changes
       while (this.ul.firstChild) {
         this.ul.removeChild(this.ul.firstChild);
       }
@@ -25,7 +26,7 @@ class AutoSuggest extends HTMLElement {
         "none";
       // iterate over suggestions and find a match
       let matches = this.fruits.filter((fruit) => fruit.includes(input));
-      // figure out how to repaint the list
+      // add ul list items when match is found
       if (matches.length && input.length) {
         // set visibility to show suggestion box
         this.shadowRoot.querySelector(".suggestion-box-wrapper").style.display =
@@ -61,7 +62,6 @@ class AutoSuggest extends HTMLElement {
   }
   shadowRoot = null;
   searchBox = null;
-
   fruits = ["Apples", "Apricots", "Cherries", "Grapes", "Bananas"];
 
   withStyles(cssStyles) {
